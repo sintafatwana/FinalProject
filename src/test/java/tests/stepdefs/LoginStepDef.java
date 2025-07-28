@@ -17,29 +17,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LoginStepDef {
-   WebDriver driver;
+    WebDriver driver;
 
     @Before
     public void beforeTest(){
-        {
-            WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().setup();
 
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless=new");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--no-sandbox");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
 
-            driver = new ChromeDriver(options);
-        }
+        driver = new ChromeDriver(options);
     }
 
     @After
     public void afterTest(){
-        if (driver != null) {
-        driver.close();  // atau driver.quit() untuk memastikan semua ditutup
-        } else {
-        System.out.println("[WARNING] Driver is null — tidak dapat menutup browser.");
-        }
+        driver.close();
     }
 
     @Given("user in on login page")
