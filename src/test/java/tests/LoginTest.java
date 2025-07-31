@@ -1,37 +1,65 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import pages.LoginPage;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginTest {
+    WebDriver driver;
 
-        @Test
-        public void testValidLogin() {
-            WebDriver driver = WebDriverManager.chromiumdriver().create();
+    @BeforeEach
+    public void setUp() {
+        WebDriverManager.chromedriver().setup();
 
-            LoginPage loginPage = new LoginPage(driver);
+        // Disable Chrome password manager popups
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("https://www.saucedemo.com/v1/");
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", prefs);
 
-            loginPage.InputUsername("standard_user");
-            loginPage.InputPassword("secret_sauce");
-            loginPage.ClickLoginBtn();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
 
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testValidLogin() {
+        WebDriver driver = WebDriverManager.chromiumdriver().create();
+        LoginPage loginPage = new LoginPage(driver);
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("https://www.saucedemo.com/");
+
+        loginPage.InputUsername("standard_user");
+        loginPage.InputPassword("secret_sauce");
+        loginPage.ClickLoginBtn();
         }
 
         @Test
         public void testInvalidUsernameLogin() {
-            WebDriver driver = WebDriverManager.chromiumdriver().create();
             LoginPage loginPage = new LoginPage(driver);
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("https://www.saucedemo.com/v1/");
+            driver.get("https://www.saucedemo.com/");
 
             loginPage.InputUsername("abdul");
             loginPage.InputPassword("secret_sauce");
@@ -40,11 +68,8 @@ public class LoginTest {
 
         @Test
         public void testWrongPasswordLogin() {
-            WebDriver driver = WebDriverManager.chromiumdriver().create();
             LoginPage loginPage = new LoginPage(driver);
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("https://www.saucedemo.com/v1/");
+            driver.get("https://www.saucedemo.com/");
 
             loginPage.InputUsername("standard_user");
             loginPage.InputPassword("123");
@@ -53,11 +78,8 @@ public class LoginTest {
 
         @Test
         public void testBlankUsernameLogin() {
-            WebDriver driver = WebDriverManager.chromiumdriver().create();
             LoginPage loginPage = new LoginPage(driver);
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("https://www.saucedemo.com/v1/");
+            driver.get("https://www.saucedemo.com/");
 
             loginPage.InputUsername("");
             loginPage.InputPassword("secret_sauce");
@@ -66,11 +88,8 @@ public class LoginTest {
 
         @Test
         public void testBlankPasswordLogin() {
-            WebDriver driver = WebDriverManager.chromiumdriver().create();
             LoginPage loginPage = new LoginPage(driver);
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("https://www.saucedemo.com/v1/");
+            driver.get("https://www.saucedemo.com/");
 
             loginPage.InputUsername("standard_user");
             loginPage.InputPassword("");

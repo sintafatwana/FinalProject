@@ -15,7 +15,7 @@ Feature: Login
     When user input email text box with "sinta"
     And user input password text box with "secret_sauce"
     And user click login button
-    Then user will see error message
+    Then user will see error message "Epic sadface: Username and password do not match any user in this service"
 
   @invalid-login
   Scenario: Login using wrong password
@@ -23,7 +23,7 @@ Feature: Login
     When user input email text box with "standard_user"
     And user input password text box with "12345"
     And user click login button
-    Then user will see error message
+    Then user will see error message "Epic sadface: Username and password do not match any user in this service"
 
   @invalid-login
   Scenario: Login using blank username
@@ -31,7 +31,7 @@ Feature: Login
     When user input email text box with ""
     And user input password text box with "secret_sauce"
     And user click login button
-    Then user will see error message
+    Then user will see error message "Epic sadface: Username is required"
 
   @invalid-login
   Scenario: Login using blank password
@@ -39,4 +39,4 @@ Feature: Login
     When user input email text box with "standard_user"
     And user input password text box with ""
     And user click login button
-    Then user will see error message
+    Then user will see error message "Epic sadface: Password is required"

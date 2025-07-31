@@ -1,21 +1,17 @@
 package pages;
 
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import tests.LoginTest;
-
-import static org.bouncycastle.cms.RecipientId.password;
 
 public class LoginPage {
 
     WebDriver driver;
 
-    By UsernameField = By.id("user-name");
-    By PasswordField = By.id("password");
-    By LoginButton = By.id("login-button");
-    By ErrorMessage  = By.id("error");
-    By ProductTitle = By.id("item_0_title_link");
+    public By UsernameField = By.id("user-name");
+    public By PasswordField = By.id("password");
+    public By LoginButton = By.id("login-button");
+    public By ErrorMessage  = By.id("error");
+    public By ProductTitle = By.id("item_4_title_link");
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
