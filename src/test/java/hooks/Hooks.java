@@ -18,11 +18,6 @@ public class Hooks {
     @Before
     public void setUp() {
         WebDriverManager.chromedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        //chromeOptions.addArguments("--headless=new");
-        //chromeOptions.addArguments("--disable-dev-shm-usage");
-        //chromeOptions.addArguments("--no-sandbox");
-
         // Disable Chrome password manager popups
         Map<String, Object> prefs = new HashMap<>();
         // Disable semua jenis popup dan permission
@@ -43,7 +38,7 @@ public class Hooks {
 
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
-        //options.addArguments("--headless=new");
+        options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -62,9 +57,7 @@ public class Hooks {
         options.addArguments("--guest");
         options.addArguments("--user-data-dir=C:\\Temp\\chrome-empty-profile");
 
-
         driver = new ChromeDriver(options);
-        //driver = new ChromeDriver();  // or ChromeOptions if needed
         DriverManager.setDriver(driver);
     }
 
