@@ -1,0 +1,32 @@
+name: Run Cucumber Tests
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Build with Gradle
+        run: ./gradlew clean test
+
+      - name: Generate Allure Report
+        run: |
+          curl -o allure.zip -L https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
+          unzip allure.zip -d allure
+          ./allure/bin/allure generate build/allure-results --clean -o build/allure-report
+
+      - name: Upload Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: build/allure-report
