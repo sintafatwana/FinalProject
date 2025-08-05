@@ -7,9 +7,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        glue = {"java.tests.stepdefs"},
+        glue = {"tests.stepdefs", "hooks"},
         features = {"src/test/resources"},
-        plugin = {"pretty","html:reports/test-report.html"}
+        plugin = {"pretty","io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
+                "html:reports/test-report.html"}
 )
 
 public class CucumberTest {

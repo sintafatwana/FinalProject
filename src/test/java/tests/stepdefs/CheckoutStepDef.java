@@ -1,49 +1,27 @@
 package tests.stepdefs;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import pages.*;
+import utils.DriverManager;
 
 public class CheckoutStepDef {
     WebDriver driver;
-    HomePage homePage = new HomePage(driver);
-    CartPage cartPage = new CartPage(driver);
-    CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage(driver);
-    CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage(driver);
-    CheckoutCompletePage checkoutCompletePage = new CheckoutCompletePage(driver);
+    HomePage homePage = new HomePage();
+    CartPage cartPage = new CartPage();
+    CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage();
+    CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage();
+    CheckoutCompletePage checkoutCompletePage = new CheckoutCompletePage();
 
-    @Before
-    public void beforeTest(){
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--no-sandbox");
-
-        driver = new ChromeDriver(options);
-    }
-
-    @After
-    public void afterTest(){
-        driver.close();
+    public CheckoutStepDef() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     @And("user click cart icon on homepage")
     public void userClickCartIconOnHomepage() {
         homePage.ClickCartIcon();
     }
-
-    //@And("user will redirect to cart page")
-   // public void userWillRedirectToCartPage() {
-    //    cartPage.ValidateItemName();
-    //}
 
     @And("user click checkout button on cart page")
     public void userClickCheckoutButtonOnCartPage() {
@@ -77,7 +55,7 @@ public class CheckoutStepDef {
 
     @And("user will redirect to checkout overview page")
     public void userWillRedirectToCheckoutOverviewPage() {
-        checkoutOverviewPage.ValidateOnItemName();
+        checkoutOverviewPage.ValidateOnCheckoutOverviewPage();
     }
 
     @And("user click finish button on checkout overview page")

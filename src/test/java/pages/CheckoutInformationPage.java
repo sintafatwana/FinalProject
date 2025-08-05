@@ -3,7 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import utils.DriverManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,8 +18,8 @@ public class CheckoutInformationPage {
     public By Title = By.className("title");
     public By ErrorButton = By.cssSelector("h3[data-test='error']");
 
-    public CheckoutInformationPage(WebDriver driver){
-        this.driver = driver;
+    public CheckoutInformationPage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     public void InputFirstNameField(String FirstName){

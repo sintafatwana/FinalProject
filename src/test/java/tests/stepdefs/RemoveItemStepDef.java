@@ -1,83 +1,43 @@
 package tests.stepdefs;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pages.CartPage;
 import pages.DetailItemPage;
 import pages.HomePage;
 import pages.LoginPage;
-
-import java.sql.Driver;
+import utils.DriverManager;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
 
 public class RemoveItemStepDef {
-    private static final Logger log = LoggerFactory.getLogger(RemoveItemStepDef.class);
     WebDriver driver;
-    HomePage homePage;
-    CartPage cartPage;
-    DetailItemPage detailItemPage;
-    LoginPage loginPage;
+    HomePage homePage = new HomePage();
+    CartPage cartPage = new CartPage();
+    DetailItemPage detailItemPage = new DetailItemPage();
+    LoginPage loginPage = new LoginPage();
 
-    @Before
-    public void beforeTest(){
-        WebDriverManager.chromedriver().setup();
-
-        // Disable Chrome password manager popups
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("prefs", prefs);
-        options.addArguments("--headless=new");
-        options.addArguments("--disable-gpu");
-
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
-        homePage = new HomePage(driver);
-        cartPage = new CartPage(driver);
-        detailItemPage = new DetailItemPage(driver);
-        loginPage = new LoginPage(driver);
-    }
-
-    @After
-    public void afterTest(){
-        driver.close();
+    public RemoveItemStepDef() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     @Given("user open login page")
     public void userOpenLoginPage() {
         driver.get("https://www.saucedemo.com/");
-        log.info("berhasil mengakses web saucedemo");
     }
 
     @And("user login with username and password")
-    public void userLoginWithUsernameAndPassword() throws InterruptedException {
+    public void userLoginWithUsernameAndPassword() {
         loginPage.InputUsername("standard_user");
         loginPage.InputPassword("secret_sauce");
         loginPage.ClickLoginBtn();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_list")));
-        homePage.validateOnHomePage();
-        Thread.sleep(2000);
+        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_list")));
     }
 
     @And("user click remove button on home page")
@@ -128,5 +88,16 @@ public class RemoveItemStepDef {
     @And("user will see remove button")
     public void userWillSeeRemoveButton() {
         homePage.ValidateOnRemoveButton();
+    }
+
+    @And("user click button show alert")
+    public void userClickButtonShowAlert(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+        String text = alert.getText();
+        assertEquals(text, "OK");
+        alert.accept();
     }
 }

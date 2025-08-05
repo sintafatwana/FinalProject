@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.DriverManager;
 
 import java.time.Duration;
 
@@ -16,7 +17,7 @@ public class CartPage {
     WebDriver driver;
 
     By ItemQuantity = By.className("cart_quantity");
-    public By ItemName = By.className("inventory_item_name");
+    public By ItemName = By.id("item_4_title_link");
     By ItemDesc = By.className("inventory_item_desc");
     By ItemPrice = By.className("inventory_item_price");
     By BtnContinueShopping = By.id("continue-shopping");
@@ -24,8 +25,8 @@ public class CartPage {
     public By BtnRemove = By.id("remove-sauce-labs-backpack");
     By CartIconShowBadge = By.cssSelector(".shopping_cart_badge");
 
-    public CartPage(WebDriver driver){
-        this.driver = driver;
+    public CartPage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     public void ClickBtnRemove(){

@@ -1,66 +1,23 @@
 package tests.stepdefs;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.logging.Log;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import pages.CartPage;
 import pages.HomePage;
 import pages.LoginPage;
-
-import java.sql.Driver;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
+import utils.DriverManager;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AddItemStepDef {
     WebDriver driver;
-    LoginPage loginPage;
-    HomePage homePage;
-    CartPage cartPage;
+    LoginPage loginPage = new LoginPage();
+    HomePage homePage = new HomePage();
+    CartPage cartPage = new CartPage();
 
-    @Before
-    public void BeforeTest(){
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        //chromeOptions.addArguments("--headless=new");
-        //chromeOptions.addArguments("--disable-dev-shm-usage");
-        //chromeOptions.addArguments("--no-sandbox");
-
-        // Disable Chrome password manager popups
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-
-        chromeOptions.setExperimentalOption("prefs", prefs);
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().window().maximize();
-
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        cartPage = new CartPage(driver);
-    }
-
-    @After
-    public void AfterTest(){
-        driver.quit();
-    }
-
-    @Given("user open the login page")
-    public void userOpenTheLoginPage() {
-        driver.get("https://www.saucedemo.com/");
+    public AddItemStepDef() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     @And("user login with username {string} and password {string}")
@@ -86,7 +43,7 @@ public class AddItemStepDef {
         homePage.ClickCartIcon();
     }
 
-    @Then("user will redirect to cart page")
+    @And("user will redirect to cart page")
     public void userWillSeeItemInTheCartPage() {
         cartPage.ValidateItemName();
     }

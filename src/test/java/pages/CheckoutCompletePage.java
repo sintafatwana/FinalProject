@@ -3,7 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import utils.DriverManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -13,8 +13,8 @@ public class CheckoutCompletePage {
     By completeHeader = By.className("complete-header");
     By btnBackToHome = By.id("back-to-products");
 
-    public CheckoutCompletePage(WebDriver driver){
-        this.driver = driver;
+    public CheckoutCompletePage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     public void ValidateOnCheckoutCompletePage(){

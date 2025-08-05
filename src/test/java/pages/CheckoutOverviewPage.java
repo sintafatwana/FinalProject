@@ -3,8 +3,10 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.devtools.v85.domstorage.model.Item;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.DriverManager;
+import java.time.Duration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -12,18 +14,26 @@ public class CheckoutOverviewPage {
     WebDriver driver;
 
     By SummaryQTY = By.className("cart_quantity");
-    By ItemName = By.id("item_4_title_link");
-    By ItemDesc = By.className("inventory_item_desc");
-    By ItemPrice = By.className("inventory_item_price");
-    By ValueLabel = By.className("summary_value_label");
-    By ItemTotalLabel = By.className("summary_subtotal_label");
-    By TaxLabel = By.className("summary_tax_label");
-    By TotalLabel = By.className("summary_total_label");
+    public By ItemName = By.id("item_4_title_link");
+    public By ItemDesc = By.className("inventory_item_desc");
+    public By ItemPrice = By.className("inventory_item_price");
+    public By ValueLabel = By.className("summary_value_label");
+    public By ItemTotalLabel = By.className("summary_subtotal_label");
+    public By TaxLabel = By.className("summary_tax_label");
+    public By TotalLabel = By.className("summary_total_label");
     public By BtnFinish = By.id("finish");
-    By BtnCancel = By.id("cancel");
+    public By BtnCancel = By.id("cancel");
+    public By Title = By.className("title");
 
-    public CheckoutOverviewPage(WebDriver driver){
-        this.driver = driver;
+    public CheckoutOverviewPage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
+    }
+
+    public void ValidateOnCheckoutOverviewPage(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement title = wait.until(ExpectedConditions.visibilityOfElementLocated(Title));
+        assertTrue(title.isDisplayed());
+        assertEquals("Checkout: Overview", title.getText());
     }
 
     public void ValidateOnSummaryQTY(){

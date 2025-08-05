@@ -3,9 +3,9 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.devtools.v85.domstorage.model.Item;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.DriverManager;
 
 import java.time.Duration;
 
@@ -18,9 +18,10 @@ public class DetailItemPage {
     public By AddToCartBtn = By.id("add-to-cart");
 
     WebDriver driver;
-    public DetailItemPage(WebDriver driver){
-        this.driver=driver;
+    public DetailItemPage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
+
     public void ValidateItemName(){
         WebElement validateItemName = driver.findElement(ItemName);
         assertTrue(validateItemName.isDisplayed());
@@ -36,19 +37,11 @@ public class DetailItemPage {
         WebElement addToCartBtn = wait.until(ExpectedConditions.elementToBeClickable(AddToCartBtn));
         addToCartBtn.click();
     }
-    public void ValidateRemoveBtn(){
-        boolean RemoveBtnHilang = driver.findElements(RemoveBtn).isEmpty();
 
-        if(!RemoveBtnHilang){
-            System.out.println("Remove button belum berhasil dihapus");
-        } else {
-            System.out.println("Remove button berhasil dihapus");
-        }
-    }
     public void ValidateAddToCartBtn(){
         WebElement addToCartBtn = driver.findElement(AddToCartBtn);
         assertTrue(addToCartBtn.isDisplayed());
-        assertEquals("Add To Cart", addToCartBtn.getText());
+        assertEquals("Add to cart", addToCartBtn.getText());
     }
 
 }

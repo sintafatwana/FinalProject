@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.DriverManager;
 
 public class LoginPage {
 
@@ -13,8 +14,8 @@ public class LoginPage {
     public By ErrorMessage  = By.id("error");
     public By ProductTitle = By.id("item_4_title_link");
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
+    public LoginPage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     public void InputUsername(String username){

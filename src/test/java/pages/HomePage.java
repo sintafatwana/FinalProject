@@ -1,56 +1,50 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.DriverManager;
 
 import java.time.Duration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class HomePage {
     public By ProductTitle = By.id("item_4_title_link");
-    public By BtnRemove = By.xpath("//*[@id=\"remove-sauce-labs-backpack\"]");
-    public By BtnAddToCart = By.xpath("//button[contains(text(), 'Add to cart')]");
-    public By CartIcon = By.className("shopping_cart_link");
+    public By BtnRemove = By.id("remove-sauce-labs-backpack");
+    public By BtnAddToCart = By.id("add-to-cart-sauce-labs-backpack");
+    public By CartIcon = By.id("shopping_cart_container");
     public By ItemImage = By.className("inventory_item_img");
 
     private WebDriver driver;
 
-    public HomePage(WebDriver driver){
-        this.driver = driver;
+    public HomePage() {
+        this.driver = DriverManager.getDriver(); // properly fetch WebDriver
     }
 
     public void validateOnHomePage(){
-        WebElement ProductElement = driver.findElement(ProductTitle);
-        assertTrue(ProductElement.isDisplayed());
-        assertEquals("Sauce Labs Backpack", ProductElement.getText());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement itemName = wait.until(ExpectedConditions.visibilityOfElementLocated(ProductTitle));
+        assertTrue(itemName.isDisplayed());
+        assertEquals("Sauce Labs Backpack", itemName.getText());
     }
 
     public void ValidateOnRemoveButton(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement removeBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(BtnRemove));
-        removeBtn.click();
     }
 
     public void ClickRemoveButtonOnHomePage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        try {
-            WebElement removeBtn = wait.until(ExpectedConditions.elementToBeClickable(BtnRemove));
-            removeBtn.click();
-        } catch (TimeoutException e) {
-            throw new AssertionError("Remove button on Home Page was not clickable within timeout. Locator: " + BtnRemove, e);
-        }
+        WebElement removeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(BtnRemove));
+        wait.until(ExpectedConditions.elementToBeClickable(removeButton)).click();
     }
 
     public void ClickBtnAddToCart(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement addToCartBtn = wait.until(ExpectedConditions.elementToBeClickable(BtnAddToCart));
-        addToCartBtn.click();
+        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        //WebElement addToCartBtn = wait.until(ExpectedConditions.elementToBeClickable(BtnAddToCart));
+        //addToCartBtn.click();
+        driver.findElement(BtnAddToCart).click();
     }
 
     public void ClickCartIcon(){
@@ -62,9 +56,15 @@ public class HomePage {
     }
 
     public void ValidateOnAddToCartBtn(){
-        WebElement AddToCartBtn = driver.findElement(BtnAddToCart);
-        assertTrue(AddToCartBtn.isDisplayed());
-        assertEquals("Add To Cart", AddToCartBtn.getText());
+        try {
+            WebElement addToCartBtn = driver.findElement(BtnAddToCart);
+
+            assertTrue("Add to Cart button is not displayed.", addToCartBtn.isDisplayed());
+            assertEquals("Add to Cart button text mismatch.", "Add to cart", addToCartBtn.getText());
+
+        } catch (NoSuchElementException e) {
+            fail("Add to Cart button not found on the page.");
+        }
     }
     public void ClickItemImageOnHomePage(){
         driver.findElement(ItemImage).click();
