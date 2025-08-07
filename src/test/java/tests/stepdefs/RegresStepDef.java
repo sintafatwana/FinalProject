@@ -30,18 +30,30 @@ public class RegresStepDef {
     // ✅ Step POST request with body
     @When("I send POST request to {string} with body:")
     public void iSendPOSTRequestToWithBody(String endpoint, Map<String, String> data) {
-        JSONObject json = new JSONObject(data);
+        JSONObject jsonObject = new JSONObject(data);
         response = RestAssured
                 .given()
                 .baseUri("https://reqres.in/api")
                 .header("x-api-key", "reqres-free-v1")
                 .contentType(ContentType.JSON)
-                .body(json.toString())
+                .body(jsonObject.toString())
                 .when()
                 .post(endpoint)
                 .then()
                 .log().all()
                 .extract().response();
+
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            // Jika value "null", ubah jadi JSONObject.NULL (Java null untuk JSON)
+            if ("null".equalsIgnoreCase(value)) {
+                jsonObject.put(key, JSONObject.NULL);
+            } else {
+                jsonObject.put(key, value);
+            }
+        }
     }
 
     // ✅ Step status code assertion
@@ -62,5 +74,18 @@ public class RegresStepDef {
     public void theResponseBodyShouldBe(String jsonKey, String expectedValue) {
         String actualValue = response.jsonPath().getString(jsonKey);
         Assert.assertEquals(expectedValue, actualValue);
+    }
+
+    @When("I send GET request to {string} use method {string}")
+    public void iSendGETRequestToUseMethod(String url) {
+        response = RestAssured.given()
+                .when().put(url).then()
+                .log().all().extract().response();
+    }
+
+    @And("the response body {string} should be not null")
+    public void theResponseBodyShouldBeNotNull(String fieldName) {
+        String value = response.jsonPath().getString(fieldName);
+        Assert.assertNotNull(value, "field "+fieldName+ "is null. It should NOT be null.");
     }
 }
