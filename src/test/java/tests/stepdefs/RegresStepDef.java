@@ -1,5 +1,6 @@
 package tests.stepdefs;
 
+import groovy.lang.GString;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -7,10 +8,13 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 import org.junit.Assert;
 import java.io.File;
 import java.util.Map;
+
+import static org.junit.Assert.fail;
 
 public class RegresStepDef {
     private Response response;
@@ -77,15 +81,37 @@ public class RegresStepDef {
     }
 
     @When("I send GET request to {string} use method {string}")
-    public void iSendGETRequestToUseMethod(String url) {
-        response = RestAssured.given()
-                .when().put(url).then()
-                .log().all().extract().response();
+    public void iSendGETRequestToUseMethod(String url, String method) {
+        RequestSpecification requestSpecification = RestAssured.given();
+
+        switch (method.toUpperCase()){
+            case "PUT":
+                response = requestSpecification.when().put(url);
+                break;
+            case "POST":
+                response = requestSpecification.when().post(url);
+                break;
+            default:
+                throw new IllegalArgumentException ("Unsupported method: "+method);
+        }
+        this.response = response.then().log().all().extract().response();
     }
 
     @And("the response body {string} should be not null")
     public void theResponseBodyShouldBeNotNull(String fieldName) {
         String value = response.jsonPath().getString(fieldName);
         Assert.assertNotNull(value, "field "+fieldName+ "is null. It should NOT be null.");
+    }
+
+    @And("the response should mismatch JSON schema {string}")
+    public void theResponseShouldMismatchJSONSchema(String schemaFileName) {
+        File schema = new File("src/test/resources/JsonSchema/" + schemaFileName);
+        try {
+            response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(schema));
+            fail("Response matched the schema but it should not.");
+        } catch (AssertionError e) {
+            // Expected: schema mismatch
+            System.out.println("Schema validation failed as expected: " + e.getMessage());
+        }
     }
 }

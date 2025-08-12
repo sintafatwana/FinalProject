@@ -24,7 +24,7 @@
               "type": "integer"
             },
             "email": {
-              "type": "string"
+              "type": "integer"
             },
             "first_name": {
               "type": "string"
