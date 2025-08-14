@@ -1,4 +1,4 @@
-@Checkout
+@web
   Feature: Checkout Item
 
     @invalid-checkout

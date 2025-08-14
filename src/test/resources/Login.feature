@@ -1,4 +1,4 @@
-@login
+@web
 Feature: Login
 
   @valid-login

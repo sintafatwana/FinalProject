@@ -1,4 +1,4 @@
-@RemoveItem
+@web
   Feature: Remove Item
     Scenario: Remove Item From Cart On Home Page
       Given user open login page

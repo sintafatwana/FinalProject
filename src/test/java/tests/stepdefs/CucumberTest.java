@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         glue = {"tests.stepdefs", "hooks"},
         features = {"src/test/resources"},
         plugin = {"pretty","io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
-                "html:reports/test-report.html"}
+                "html:reports/WebDanApiJadiSatu-report.html"}
 )
 
 public class CucumberTest {

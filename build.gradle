@@ -49,8 +49,8 @@ configurations {
 
 def tags = (findProperty('tags') == null) ? 'not @exclude' : "${findProperty('tags')} and not @exclude"
 
-tasks.register('cucumber', JavaExec) {
-    description = "Running Cucumber Test"
+tasks.register('webCucumber', JavaExec) {
+    description = "Run Web UI Cucumber Tests"
     group = "verification"
 
     classpath = configurations.cucumberRuntime +
@@ -61,10 +61,32 @@ tasks.register('cucumber', JavaExec) {
 
     args = [
             '--plugin', 'pretty',
-            '--plugin', 'html:reports/test-report.html',
-            '--plugin', 'json:reports/test-report.json',
+            '--plugin', 'html:reports/web-report.html',
+            '--plugin', 'json:reports/web-report.json',
             '--glue', 'tests.stepdefs',
             '--tags', tags,
+            'src/test/resources'
+    ]
+
+    dependsOn 'assemble', 'compileTestJava'
+}
+
+tasks.register('apiCucumber', JavaExec) {
+    description = "Run API Cucumber Tests"
+    group = "verification"
+
+    classpath = configurations.cucumberRuntime +
+            sourceSets.main.output +
+            sourceSets.test.output
+
+    mainClass.set("io.cucumber.core.cli.Main")
+
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'html:reports/api-report.html',
+            '--plugin', 'json:reports/api-report.json',
+            '--glue', 'tests.stepdefs',
+            '--tags', '@api and not @exclude',
             'src/test/resources'
     ]
 

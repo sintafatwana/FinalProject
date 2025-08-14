@@ -1,4 +1,4 @@
-@apiTest
+@api
   Feature: Reqres API Tests
     Scenario: GET List Users - Valid Response
       When I send GET request to "https://reqres.in/api/users?page=2"

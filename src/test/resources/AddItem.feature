@@ -1,4 +1,4 @@
-@AddItem
+@web
 Feature: Add Item
 
   Scenario: Add a single item to the cart
