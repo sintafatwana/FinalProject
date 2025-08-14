@@ -32,9 +32,13 @@ jobs:
       - name: Setup gradlew
         run: chmod +x gradlew
 
-      # Execute Gradle command to run Cucumber tests
-      - name: Execute test
-        run: ./gradlew clean test
+      # Run UI Tests
+      - name: Run Web UI Tests
+        run: ./gradlew test --tests "*ui.*"
+
+      # Run API Tests
+      - name: Run API Tests
+        run: ./gradlew test --tests "*api.*"
 
       # Archive test results
       - name: Archive Test Result
@@ -51,12 +55,20 @@ jobs:
         with:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_DIR: reports
-
+          
+     # Download & Generate Allure Report
       - name: Generate Allure Report
         run: |
           curl -o allure.zip -L https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
           unzip allure.zip -d allure
           ./allure/bin/allure generate build/allure-results --clean -o build/allure-report
+
+      # Upload Allure report as artifact
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: combined-allure-report
+          path: build/allure-report
 
       - name: Upload Report as Artifact
         uses: actions/upload-artifact@v4
