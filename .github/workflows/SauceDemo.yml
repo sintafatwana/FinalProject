@@ -1,4 +1,4 @@
-name: Web Automation Workflow
+name: Web and API Automation Workflow
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
 
       # Run API Tests
       - name: Run API Tests
-        run: ./gradlew test --tests "*api_test.*"
+        run: ./gradlew apiTest
 
       # Archive test results
       - name: Archive Test Result
