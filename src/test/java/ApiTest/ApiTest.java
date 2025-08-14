@@ -1,4 +1,4 @@
-package api_test;
+package ApiTest;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.File;
 import static io.restassured.RestAssured.*;
 
-public class Api_test {
+public class ApiTest {
 
     @Test
     public void testGetListUsersValid() {
