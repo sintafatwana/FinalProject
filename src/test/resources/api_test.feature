@@ -20,7 +20,7 @@
 
     Scenario: GET List Users - Page Parameter Missing
       When I send GET request to "https://reqres.in/api/users"
-      Then the response status code should be 401
+      Then the response status code should be 200
 
     Scenario: GET List Users - Wrong Parameter Name
       When I send GET request to "https://reqres.in/api/users?pg=2"

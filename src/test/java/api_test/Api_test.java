@@ -1,4 +1,4 @@
-package apiautomation;
+package api_test;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.File;
 import static io.restassured.RestAssured.*;
 
-public class testRegres {
+public class Api_test {
 
     @Test
     public void testGetListUsersValid() {
@@ -35,6 +35,19 @@ public class testRegres {
                 .then()
                 .log().all()
                 .assertThat().statusCode(201)
+                .assertThat().body(JsonSchemaValidator.matchesJsonSchema(jsonSchema));
+    }
+
+    @Test
+    public void testGetListUsersUsingPUT() {
+        File jsonSchema = new File("src/test/resources/JsonSchema/GetListUserSchema.json");
+
+        given()
+                .when()
+                .put("https://reqres.in/api/users?page=2")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
                 .assertThat().body(JsonSchemaValidator.matchesJsonSchema(jsonSchema));
     }
 
