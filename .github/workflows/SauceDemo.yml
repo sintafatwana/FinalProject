@@ -34,7 +34,7 @@ jobs:
 
       # Execute Gradle command to run Cucumber tests
       - name: Execute test
-        run: ./gradlew clean test
+        run: ./gradlew webTest
 
       # Run API Tests
       - name: Run API Tests
