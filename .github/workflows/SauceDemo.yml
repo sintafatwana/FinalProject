@@ -33,20 +33,24 @@ jobs:
         run: chmod +x gradlew
 
       # Execute Gradle command to run Cucumber tests
-      - name: Execute test
-        run: ./gradlew webTest
+      - name: Run Web Cucumber Tests
+        run: ./gradlew webCucumber
 
       # Run API Tests
-      - name: Run API Tests
-        run: ./gradlew apiTest
+      - name: Run API Cucumber Tests
+        run: ./gradlew apiCucumber
 
-      # Archive test results
-      - name: Archive Test Result
-        uses: actions/upload-artifact@v4.6.2
-        if: always()
+      - name: Archive Web Report
+        uses: actions/upload-artifact@v4
         with:
-          name: Cucumber Report
-          path: reports
+         name: Web Cucumber Report
+         path: reports/web-report.html
+
+      - name: Archive API Report
+        uses: actions/upload-artifact@v4
+        with:
+         name: API Cucumber Report
+         path: reports/api-report.html
 
       # Deploy report to GitHub Pages
       - name: Deploy report to Github Pages
