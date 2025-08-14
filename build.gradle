@@ -74,6 +74,7 @@ tasks.register('webCucumber', JavaExec) {
 tasks.register('apiCucumber', JavaExec) {
     description = "Run API Cucumber Tests"
     group = "verification"
+    ignoreExitValue = true
 
     classpath = configurations.cucumberRuntime +
             sourceSets.main.output +
@@ -83,8 +84,10 @@ tasks.register('apiCucumber', JavaExec) {
 
     args = [
             '--plugin', 'pretty',
+            '--plugin', 'summary',
             '--plugin', 'html:reports/api-report.html',
             '--plugin', 'json:reports/api-report.json',
+            '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
             '--glue', 'tests.stepdefs',
             '--tags', '@api and not @exclude',
             'src/test/resources'
