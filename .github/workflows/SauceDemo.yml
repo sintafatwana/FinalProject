@@ -45,6 +45,7 @@ jobs:
 
       # Run API Tests
       - name: Run API Cucumber Tests
+        if: always()
         run: ./gradlew apiCucumber
 
       - name: Archive API Report
