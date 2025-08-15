@@ -36,18 +36,20 @@ jobs:
       - name: Run Web Cucumber Tests
         run: ./gradlew webCucumber
 
-      # Run API Tests
-      - name: Run API Cucumber Tests
-        run: ./gradlew apiCucumber
-
       - name: Archive Web Report
         uses: actions/upload-artifact@v4
+        if: always()
         with:
          name: Web Cucumber Report
          path: reports/web-report.html
 
+      # Run API Tests
+      - name: Run API Cucumber Tests
+        run: ./gradlew apiCucumber
+
       - name: Archive API Report
         uses: actions/upload-artifact@v4
+        if: always()
         with:
          name: API Cucumber Report
          path: reports/api-report.html
