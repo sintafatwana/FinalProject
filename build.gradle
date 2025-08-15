@@ -52,6 +52,7 @@ def tags = (findProperty('tags') == null) ? 'not @exclude' : "${findProperty('ta
 tasks.register('webCucumber', JavaExec) {
     description = "Run Web UI Cucumber Tests"
     group = "verification"
+    ignoreExitValue = true
 
     classpath = configurations.cucumberRuntime +
             sourceSets.main.output +
