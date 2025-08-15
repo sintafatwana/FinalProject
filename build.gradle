@@ -64,7 +64,7 @@ tasks.register('webCucumber', JavaExec) {
             '--plugin', 'html:reports/web-report.html',
             '--plugin', 'json:reports/web-report.json',
             '--glue', 'tests.stepdefs',
-            '--tags', tags,
+            '--tags', '@web and not @exclude',
             'src/test/resources'
     ]
 
